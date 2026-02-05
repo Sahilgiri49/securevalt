@@ -1,0 +1,7 @@
+{
+  "name": "SecureVault",
+  "description": "A privacy-preserving, zero-knowledge image vault using client-side encryption and blockchain integrity.",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}
