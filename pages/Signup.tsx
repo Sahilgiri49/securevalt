@@ -45,7 +45,7 @@ export default function Signup() {
             setError('');
             setLoading(true);
             await signup(email, password);
-            navigate('/');
+            navigate('/vault');
         } catch (err: any) {
             setError('Failed to create account: ' + err.message);
         }

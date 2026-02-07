@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Lock, Unlock, Upload, Eye, EyeOff, RefreshCw, ShieldCheck, AlertTriangle, X, Camera, ShieldAlert, LogOut } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { Lock, Unlock, Upload, Eye, EyeOff, RefreshCw, ShieldCheck, AlertTriangle, X, Camera, ShieldAlert, LogOut, Home } from 'lucide-react';
 import { encryptFile, decryptFile, calculatePasswordStrength } from '../services/cryptoService';
+import DatabaseWithRestApi from './ui/database-with-rest-api';
 import { uploadRecord, fetchRecords, clearVault, hydrateRecordFromIPFS } from '../services/storageService';
 import { VaultRecord, VaultState, DecryptedImage } from '../types';
 import { useAuth } from '../context/AuthContext';
@@ -200,6 +202,13 @@ export const Vault: React.FC = () => {
       {/* Header */}
       <div className="text-center space-y-4 pt-8 relative">
         <div className="absolute top-4 right-4">
+          <Link
+            to="/"
+            className="flex items-center space-x-2 px-4 py-2 bg-slate-800 hover:bg-blue-500/10 hover:text-blue-400 text-slate-400 rounded-lg transition-colors text-sm font-medium border border-transparent hover:border-blue-500/20"
+          >
+            <Home className="w-4 h-4" />
+            <span>Home</span>
+          </Link>
           <button
             onClick={handleLogout}
             className="flex items-center space-x-2 px-4 py-2 bg-slate-800 hover:bg-red-500/10 hover:text-red-400 text-slate-400 rounded-lg transition-colors text-sm font-medium border border-transparent hover:border-red-500/20"
@@ -352,42 +361,16 @@ export const Vault: React.FC = () => {
           </div>
 
           {/* Right: Security Diagram / Info */}
-          <div className="bg-slate-900 p-8 flex flex-col justify-center border-l border-slate-700">
-            <h3 className="text-white font-semibold mb-6 flex items-center">
-              <Lock className="w-4 h-4 mr-2 text-blue-500" /> Security Architecture
-            </h3>
-
-            <div className="space-y-6">
-              <div className="relative pl-8 border-l-2 border-slate-700">
-                <div className="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-slate-800 border-2 border-blue-500"></div>
-                <h4 className="text-slate-200 text-sm font-medium">1. Key Derivation (PBKDF2)</h4>
-                <p className="text-xs text-slate-500 mt-1">
-                  Your password is salted and hashed 600,000 times (SHA-256).
-                  This takes ~0.5s on your device but makes brute-force attacks infeasible.
-                </p>
-              </div>
-
-              <div className="relative pl-8 border-l-2 border-slate-700">
-                <div className="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-slate-800 border-2 border-purple-500"></div>
-                <h4 className="text-slate-200 text-sm font-medium">2. AES-256-GCM Encryption</h4>
-                <p className="text-xs text-slate-500 mt-1">
-                  The file is encrypted in memory. We use Galois/Counter Mode (GCM) which guarantees data cannot be modified without detection.
-                </p>
-              </div>
-
-              <div className="relative pl-8 border-l-2 border-slate-700">
-                <div className="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-slate-800 border-2 border-green-500"></div>
-                <h4 className="text-slate-200 text-sm font-medium">3. Decentralized Storage</h4>
-                <p className="text-xs text-slate-500 mt-1">
-                  Only the encrypted blob is sent to IPFS. The pointer (CID) and integrity hash are stored on the Blockchain.
-                </p>
-              </div>
-            </div>
-
-            <div className="mt-8 p-4 bg-slate-800 rounded border border-slate-700">
-              <p className="text-[10px] text-slate-400 font-mono text-center">
-                Current Session Integrity: <span className="text-green-400">SECURE</span>
-              </p>
+          {/* Right: Security Diagram / Info */}
+          <div className="bg-slate-950 p-4 md:p-8 flex flex-col justify-center border-l border-slate-800">
+            <div className="flex justify-center transform scale-90 md:scale-100">
+              <DatabaseWithRestApi
+                className=""
+                lightColor="#a855f7"
+                title="ACTIVE SESSION"
+                buttonTexts={{ first: "Validating", second: "Encrypted" }}
+                circleText="SECURE"
+              />
             </div>
           </div>
 

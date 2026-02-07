@@ -18,7 +18,7 @@ export default function Login() {
             setError('');
             setLoading(true);
             await login(email, password);
-            navigate('/');
+            navigate('/vault');
         } catch (err: any) {
             setError('Failed to log in: ' + err.message);
         }
